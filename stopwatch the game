@@ -1,0 +1,72 @@
+
+# a simple digital stopwatch that keeps track of the time in tenths of a second.
+# *the game of reflexes* - to stop the clock on a whole second (1.0, 2.0, 3.0, etc.) 
+# two numerical counters keep track of the number of times that you have stopped 
+# the watch and how many times you manage to stop the watch on a whole second.
+# executable link: http://www.codeskulptor.org/#user43_Ku1L1dOWnN_4.py
+
+import simplegui
+
+# global variables
+counter = 0
+click = True
+success_stops = 0
+total_stops = 0
+
+def format(num):
+    """function to convert time in tenths of seconds to format mins:sec.millisec"""
+    
+    millisec = num % 10
+    num = num - millisec
+    num = num / 10
+    sec = num  % 60
+    mins = num / 60
+    if (sec < 10): sec = "0"+str(sec)
+    return str(mins)+":"+str(sec)+"."+str(millisec)
+    
+    
+# event handlers for buttons; "Start", "Stop", "Reset"
+def start():
+    global click
+    timer.start()
+    click = True
+       
+def stop():
+    global counter, success_stops, total_stops, click
+    timer.stop()
+    if (click):
+        total_stops +=1
+        if (counter % 10 == 0):
+            success_stops +=1
+    click = False
+    
+def reset():
+    global counter, success_stops, total_stops
+    counter = 0
+    success_stops = 0
+    total_stops = 0
+    timer.stop()
+
+# event handler for timer with 0.1 sec interval
+def timer_handler():
+    global counter
+    counter +=1
+    
+# draw handler
+def draw(canvas):
+    canvas.draw_text(format(counter),[100,75],30,"white")
+    canvas.draw_text(str(success_stops)+"/"+str(total_stops),[210,20],25,"green")
+    
+# create frame
+frame = simplegui.create_frame('Stopwatch', 250,150)
+timer = simplegui.create_timer(100, timer_handler)
+
+# register event handlers
+frame.add_button('Start', start)
+frame.add_button('Stop', stop)
+frame.add_button('Reset', reset)
+frame.set_draw_handler(draw)
+
+# start frame
+frame.start()
+
