@@ -1,6 +1,7 @@
 
 # A function then simulates playing a round of Rock-paper-scissors-lizard-Spock 
 # by generating its own random choice from these alternatives and then determining the winner
+# executable link: http://www.codeskulptor.org/#user43_8BLdmtwLTi_8.py
 
 import random
 
