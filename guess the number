@@ -1,0 +1,78 @@
+
+# 2 person game - The first player decides a secret number in some known range while the second player attempts to guess the number.
+# After each guess, the first player answers either “Higher”, “Lower” or “Correct!” accordingly. 
+
+import simplegui
+import random
+import math
+
+# initialize num_range to a default value
+num_range = 100
+
+# helper function to start and restart the game
+def new_game():
+    
+    print 
+    
+    # initialize variables
+    global secret_number, count, limit, num_range
+    count = 0
+    limit = int(math.ceil(math.log(num_range,2)))
+    secret_number = random.randrange(0,num_range)
+    print "New game. Range is from 0 to", num_range
+    print "Number of remaining guesses is", limit
+      
+    
+# define event handlers for control panel
+def range100():
+    
+    global num_range
+    num_range = 100
+    new_game()
+
+def range1000():
+    
+    global num_range
+    num_range = 1000
+    new_game()
+
+
+def input_guess(guess):
+    
+    print 
+    
+    global secret_number, count, limit 
+    
+    # convert input string to int
+    intguess = int(guess)
+    
+    # increment count
+    count +=1
+    print "Guess was",intguess
+    print "Number of remaining guesses is", (limit - count)
+        
+    # compare input number to secret_number
+    if (count < limit):
+        if (intguess < secret_number): print "Higher" 
+        elif (intguess > secret_number): print "Lower"
+        else: 
+            print "Correct" 
+            new_game()
+        
+    # check for no. of guesses and start new game if 0 remaining guess
+    else: 
+        print "You ran out of guesses. The number was", secret_number
+        new_game()
+        return
+
+    
+# create frame
+frame = simplegui.create_frame("Guess the number", 200, 200)
+
+# register event handlers for control elements and start frame
+frame.add_button("Range is [0,100)", range100, 200)
+frame.add_button("Range is [0,1000)", range1000, 200)
+frame.add_input("Enter a guess", input_guess, 200)
+
+# call new_game 
+new_game()
