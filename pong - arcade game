@@ -49,6 +49,7 @@ def new_game():
     global score1, score2  # these are ints
     spawn_ball(random.choice(["RIGHT","LEFT"]))
     score1 = score2 = 0
+    paddle1_pos = paddle2_pos = HEIGHT / 2
 
 def draw(canvas):
     global score1, score2, paddle1_pos, paddle2_pos, ball_pos, ball_vel
