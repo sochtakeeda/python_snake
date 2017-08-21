@@ -1,0 +1,89 @@
+# Memory is a card game in which the player deals out a set of cards face down. 
+# In Memory, a turn (or a move) consists of the player flipping over two cards. 
+# If they match, the player leaves them face up. If they don't match, the player flips the cards back face down. 
+# The goal of Memory is to end up with all of the cards flipped face up in the minimum number of turns. 
+# executable code: http://www.codeskulptor.org/#user43_Ia6QaUimj7_7.py
+
+
+import simplegui
+import random
+
+# two lists represent two decks of 8 cards
+list1 = range(0,8)
+list2 = range(0,8)
+list3 = list1 + list2
+
+# helper function to initialize globals
+def new_game():
+    """ creates a new game at run. resets game on prompt """
+    
+    global state, exposed, counter
+    state = 0
+    counter = 0
+    label.set_text("Turns = "+str(counter))
+    exposed = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False,]   
+    random.shuffle(list3)
+
+     
+# define event handlers
+def mouseclick(pos):
+    """ handles mouseclick event """
+    
+    global index, state, fcard, scard, counter
+    # determines which card has been clicked
+    index = pos[0] // 50
+    # ignores mouseclick if card already exposed
+    if exposed[index] == True: pass           
+    
+    else:
+        exposed[index] = True
+        
+        # logic to display/flip cards and update # of turns
+        if state == 0:
+            state = 1
+            fcard = index
+        
+        elif state == 1:
+            state = 2
+            scard = index
+        
+        else:
+            state == 2
+            if list3[fcard] == list3[scard]:
+                pass
+            else:
+                exposed[fcard] = exposed[scard] = False
+            fcard = index
+            state = 1
+            counter += 1
+            label.set_text("Turns = "+str(counter))
+        
+# cards are 50x100 pixels in size    
+def draw(canvas):
+    pos = [18,60]
+    a = 0
+    for x in range(len(list3)):
+        canvas.draw_line((a,0), (a,100), 1, "black")
+        # displays the clicked card
+        if (exposed[x]):
+            canvas.draw_polygon([(a,0), (a+50,0), (a+50,100), (a,100)], 1, "black","black")
+            canvas.draw_text(str(list3[x]), pos, 30, "white")
+        a += 50    
+        pos[0] += 50
+    
+
+
+# create frame and add a button and label
+frame = simplegui.create_frame("Memory", 800, 100)
+frame.set_canvas_background("green")
+frame.add_button("Reset", new_game)
+label = frame.add_label("Turns = 0")
+
+# register event handlers
+frame.set_mouseclick_handler(mouseclick)
+frame.set_draw_handler(draw)
+
+# get things rolling
+new_game()
+frame.start()
+
