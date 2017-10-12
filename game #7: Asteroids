@@ -1,5 +1,5 @@
 
-executable link: http://www.codeskulptor.org/#user43_7W8bETvrPv_6.py
+executable link: http://www.codeskulptor.org/#user43_7W8bETvrPv_7.py
 
 # program template for Spaceship
 import simplegui
@@ -192,7 +192,7 @@ class Sprite:
     def draw(self, canvas): 
         if self.animated:            
             index = self.age % self.lifespan
-            print [self.image_center[0] + index * self.image_size[0], self.image_center[1]]
+            #print [self.image_center[0] + index * self.image_size[0], self.image_center[1]]
             canvas.draw_image(self.image, [self.image_center[0] + index * self.image_size[0], self.image_center[1] ] , self.image_size,
                               self.pos, self.image_size, self.angle)
         else:
